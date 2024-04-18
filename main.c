@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Symbols used in the game.
 const char PLAYER = 'X';
 const char BOT = 'O';
 const char EMPTY = ' ';
@@ -12,12 +13,16 @@ typedef struct {
     bool isPlayer;
 } Game;
 
+// Creates a new game.
 Game newGame();
 
+// Executes a player's move.
 bool play(Game *game, int place);
 
+// Executes a bot's move.
 void playBot(Game *game);
 
+// Check if the game is over.
 int isGameOver(Game *game);
 
 int main() {
