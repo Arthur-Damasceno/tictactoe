@@ -12,64 +12,13 @@ typedef struct {
     bool isPlayer;
 } Game;
 
-Game newGame() {
-    srand(time(0));
+Game newGame();
 
-    bool isPlayer = rand() % 2;
+bool play(Game *game, int place);
 
-    Game game = {{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, isPlayer};
+void playBot(Game *game);
 
-    return game;
-}
-
-bool play(Game *game, int place) {
-    if (place < 1 || place > 9 || game->board[place - 1] != EMPTY) {
-        return false;
-    }
-
-    game->board[place - 1] = PLAYER;
-
-    return true;
-}
-
-void playBot(Game *game) {
-    int place = rand() % 9;
-
-    while (true) {
-        if (game->board[place] == EMPTY) {
-            game->board[place] = BOT;
-            break;
-        }
-
-        place++;
-
-        if (place == 9) {
-            place -= 9;
-        }
-    }
-}
-
-int isGameOver(Game *game) {
-    if (game->board[0] == game->board[1] && game->board[0] == game->board[2] && game->board[0] != EMPTY) {
-        return game->board[0] == PLAYER ? 1 : 0;
-    } else if (game->board[3] == game->board[4] && game->board[3] == game->board[5] && game->board[3] != EMPTY) {
-        return game->board[3] == PLAYER ? 1 : 0;
-    } else if (game->board[6] == game->board[7] && game->board[6] == game->board[8] && game->board[6] != EMPTY) {
-        return game->board[6] == PLAYER ? 1 : 0;
-    } else if (game->board[0] == game->board[3] && game->board[0] == game->board[6] && game->board[0] != EMPTY) {
-        return game->board[0] == PLAYER ? 1 : 0;
-    } else if (game->board[1] == game->board[4] && game->board[1] == game->board[7] && game->board[1] != EMPTY) {
-        return game->board[1] == PLAYER ? 1 : 0;
-    } else if (game->board[2] == game->board[5] && game->board[2] == game->board[8] && game->board[2] != EMPTY) {
-        return game->board[2] == PLAYER ? 1 : 0;
-    } else if (game->board[0] == game->board[4] && game->board[0] == game->board[8] && game->board[0] != EMPTY) {
-        return game->board[0] == PLAYER ? 1 : 0;
-    } else if (game->board[2] == game->board[4] && game->board[2] == game->board[6] && game->board[2] != EMPTY) {
-        return game->board[2] == PLAYER ? 1 : 0;
-    }
-
-    return -1;
-}
+int isGameOver(Game *game);
 
 int main() {
     Game game = newGame();
@@ -119,4 +68,63 @@ int main() {
 
         game.isPlayer = !game.isPlayer;
     }
+}
+
+Game newGame() {
+    srand(time(0));
+
+    bool isPlayer = rand() % 2;
+
+    Game game = {{EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, isPlayer};
+
+    return game;
+}
+
+bool play(Game *game, int place) {
+    if (place < 1 || place > 9 || game->board[place - 1] != EMPTY) {
+        return false;
+    }
+
+    game->board[place - 1] = PLAYER;
+
+    return true;
+}
+
+void playBot(Game *game) {
+    int place = rand() % 9;
+
+    while (true) {
+        if (game->board[place] == EMPTY) {
+            game->board[place] = BOT;
+            break;
+        }
+
+        place++;
+
+        if (place == 9) {
+            place -= 9;
+        }
+    }
+}
+
+int isGameOver(Game *game) {
+    if (game->board[0] != EMPTY && game->board[0] == game->board[1] && game->board[0] == game->board[2]) {
+        return game->board[0] == PLAYER ? 1 : 0;
+    } else if (game->board[3] != EMPTY && game->board[3] == game->board[4] && game->board[3] == game->board[5]) {
+        return game->board[3] == PLAYER ? 1 : 0;
+    } else if (game->board[6] != EMPTY && game->board[6] == game->board[7] && game->board[6] == game->board[8]) {
+        return game->board[6] == PLAYER ? 1 : 0;
+    } else if (game->board[0] != EMPTY && game->board[0] == game->board[3] && game->board[0] == game->board[6]) {
+        return game->board[0] == PLAYER ? 1 : 0;
+    } else if (game->board[1] != EMPTY && game->board[1] == game->board[4] && game->board[1] == game->board[7]) {
+        return game->board[1] == PLAYER ? 1 : 0;
+    } else if (game->board[2] != EMPTY && game->board[2] == game->board[5] && game->board[2] == game->board[8]) {
+        return game->board[2] == PLAYER ? 1 : 0;
+    } else if (game->board[0] != EMPTY && game->board[0] == game->board[4] && game->board[0] == game->board[8]) {
+        return game->board[0] == PLAYER ? 1 : 0;
+    } else if (game->board[2] != EMPTY && game->board[2] == game->board[4] && game->board[2] == game->board[6]) {
+        return game->board[2] == PLAYER ? 1 : 0;
+    }
+
+    return -1;
 }
